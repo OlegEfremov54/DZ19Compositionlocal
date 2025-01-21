@@ -38,51 +38,59 @@ import java.util.Locale
 import com.example.dz19compositionlocal.ui.theme.DZ19CompositionlocalTheme
 
 class MainActivity : ComponentActivity() {
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             DZ19CompositionlocalTheme {
 
-                val height = remember { mutableIntStateOf(170) }
-                val bodyMass = remember { mutableIntStateOf(60) }
-                val ibmIndex =
-                    remember {
-                        derivedStateOf {
-                            if (bodyMass.intValue == 0 || height.intValue == 0)
-                                0.0
-                            else bodyMass.intValue / (height.intValue / 100.0 * height.intValue / 100.0) } }
-
-                Column(
-                    Modifier
-                        .padding(16.dp)
-                        .clip(RoundedCornerShape(16.dp))
-                        .background(Color.LightGray)
-                        .fillMaxWidth()
-                ) {
-
-                    Text(
-                        "Калькулятор ИМТ", textAlign = TextAlign.Center, fontSize = 24.sp,
-                        modifier = Modifier
-                            .background(Color.DarkGray)
-                            .fillMaxWidth()
-                            .padding(12.dp),
-                        color = Color.White
-                    )
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        InputData("Рост  человека, см", height)
-                        InputData("Вес человека, кг", bodyMass)
-                        OutputBMI(ibmIndex)
-                        ResetButton(height, bodyMass)
-                    }
-
-
+               com.example.dz19compositionlocal.Start()
                 }
 
 
+
             }
+        }
+    }
+
+
+@Composable
+fun Start() {
+    val height = remember { mutableIntStateOf(170) }
+    val bodyMass = remember { mutableIntStateOf(60) }
+    val ibmIndex =
+        remember {
+            derivedStateOf {
+                if (bodyMass.intValue == 0 || height.intValue == 0)
+                    0.0
+                else bodyMass.intValue / (height.intValue / 100.0 * height.intValue / 100.0) } }
+
+    Column(
+        Modifier
+            .padding(16.dp)
+            .clip(RoundedCornerShape(16.dp))
+            .background(Color.LightGray)
+            .fillMaxWidth()
+    ) {
+
+        Text(
+            "Калькулятор ИМТ", textAlign = TextAlign.Center, fontSize = 24.sp,
+            modifier = Modifier
+                .background(Color.DarkGray)
+                .fillMaxWidth()
+                .padding(12.dp),
+            color = Color.White
+        )
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            InputData("Рост  человека, см", height)
+            InputData("Вес человека, кг", bodyMass)
+            OutputData(ibmIndex)
+            ResetButton(height, bodyMass)
         }
     }
 }
@@ -151,7 +159,7 @@ fun InputPreview() {
 }
 
 @Composable
-fun OutputBMI(valueState: State<Double>) {
+fun OutputData(valueState: State<Double>) {
 
     val outputValue = if (valueState.value < 0.0) 0.0 else valueState.value
 
@@ -169,10 +177,13 @@ fun OutputBMI(valueState: State<Double>) {
     val textValue = String.format(Locale.ROOT, "%.2f", outputValue)
 
     Column(modifier = Modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
-        Text("Коэффициент ИМТ:", fontSize = 20.sp)
+        Text("Коэффициент ИМТ персоны:",
+            fontSize = 20.sp,
+            color = Color.DarkGray)
         Text(
             textValue,
             fontSize = 24.sp,
+            color = Color.Red,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.padding(20.dp, 4.dp)
         )
@@ -180,6 +191,7 @@ fun OutputBMI(valueState: State<Double>) {
             ibmClass,
             fontSize = 20.sp,
             textAlign = TextAlign.Center,
+            color = Color.Red,
             modifier = Modifier
                 .padding(20.dp, 8.dp)
                 .shadow(2.dp, CircleShape)
@@ -194,10 +206,10 @@ fun OutputBMI(valueState: State<Double>) {
 @Composable
 fun ResetButton(vararg mutableIntStates: MutableIntState) {
     Text(
-        "Сбросить",
+        "Сбросить параметры",
         fontSize = 24.sp,
         fontWeight = FontWeight.Bold,
-        color = Color.Red,
+        color = Color.Blue,
         modifier = Modifier
             .padding(20.dp, 8.dp)
             .shadow(2.dp, CircleShape)
