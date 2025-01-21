@@ -76,7 +76,7 @@ fun Start() {
     ) {
 
         Text(
-            "Калькулятор ИМТ", textAlign = TextAlign.Center, fontSize = 24.sp,
+            "Расчет ИМТ", textAlign = TextAlign.Center, fontSize = 24.sp,
             modifier = Modifier
                 .background(Color.DarkGray)
                 .fillMaxWidth()
